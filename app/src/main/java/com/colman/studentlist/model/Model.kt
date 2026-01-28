@@ -1,0 +1,20 @@
+package com.colman.studentlist.model
+
+class Model private constructor() {
+    val students = mutableListOf<Student>()
+
+    init {
+        for (i in 1..5) {
+            val student = Student(
+                name = "Student $i",
+                id = "ID${1000 + i}",
+                avatarUrl = "https://i.pravatar.cc/150?img=$i",
+                isPresent = false
+            )
+            students.add(student)
+        }
+    }
+    companion object {
+        val shared = Model()
+    }
+}
