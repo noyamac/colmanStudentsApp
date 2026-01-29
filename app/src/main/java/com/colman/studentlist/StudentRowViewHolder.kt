@@ -1,3 +1,5 @@
+package com.colman.studentlist
+
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
