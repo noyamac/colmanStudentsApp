@@ -19,9 +19,8 @@ class StudentDetails : AppCompatActivity() {
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         studentIndex = intent.getIntExtra("student_index", 0)
         student = Model.shared.getStudentByIndex(studentIndex)
 

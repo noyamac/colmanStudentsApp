@@ -1,13 +1,12 @@
 package com.colman.studentlist.model
 
-import android.util.Log
 import kotlin.collections.mutableListOf
 
 class Model private constructor() {
     val students = mutableListOf<Student>()
 
     init {
-        for (i in 1..5) {
+        for (i in 1..10) {
             val student = Student(
                 name = "Student $i",
                 id = "ID${1000 + i}",
@@ -17,6 +16,7 @@ class Model private constructor() {
             students.add(student)
         }
     }
+
     companion object {
         val shared = Model()
     }

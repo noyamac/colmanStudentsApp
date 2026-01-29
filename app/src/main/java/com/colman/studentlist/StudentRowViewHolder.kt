@@ -8,7 +8,6 @@ import com.colman.studentlist.model.Model
 import com.colman.studentlist.model.Student
 
 interface OnItemClickListener {
-    fun onItemClick(position: Int)
     fun onStudentClick(student: Student?, position: Int)
 }
 
@@ -26,7 +25,6 @@ class StudentRowViewHolder(itemView: View, listener: OnItemClickListener?) : Rec
 
         itemView.setOnClickListener {
             Log.i("TAG", "StudentRowViewHolder: Clicked on position $bindingAdapterPosition")
-            listener?.onItemClick(bindingAdapterPosition)
             listener?.onStudentClick(student, bindingAdapterPosition)
         }
     }

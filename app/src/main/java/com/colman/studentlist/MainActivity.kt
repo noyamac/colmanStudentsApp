@@ -25,12 +25,6 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = studentAdapter(Model.shared.students).apply {
             listener = object : OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    Intent(this@MainActivity, StudentDetails::class.java).also {
-                        it.putExtra("student_index", position)
-                    }
-                }
-
                 override fun onStudentClick(student: Student?, position: Int) {
                     Intent(this@MainActivity, StudentDetails::class.java).apply {
                         putExtra("student_name", student?.name)
@@ -45,10 +39,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         studentsRecyclerView.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (findViewById<RecyclerView>(R.id.studentlist).adapter as studentAdapter).notifyDataSetChanged()
     }
 }
