@@ -1,24 +1,22 @@
-package com.colman.studentlist
-
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.colman.studentlist.databinding.StudentRowLayoutBinding
+import com.colman.studentlist.R
 import com.colman.studentlist.model.Student
 
 class studentAdapter(
-    private var students: List<Student>,
-): RecyclerView.Adapter<StudentRowViewHolder>() {
-    override fun getItemCount(): Int = students.size
+    private val studentList: MutableList<Student>?
+) : RecyclerView.Adapter<StudentRowViewHolder>() {
+    var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentRowViewHolder {
-        val inflator = LayoutInflater.from(parent.context)
-        val binding = StudentRowLayoutBinding.inflate(inflator, parent, false)
-        return StudentRowViewHolder(binding = binding)
+        val inflator = LayoutInflater.from(parent.context).inflate(R.layout.student_row_layout, parent, false)
+        return StudentRowViewHolder(inflator, listener)
     }
 
+    override fun getItemCount(): Int = studentList?.size ?: 0
+
     override fun onBindViewHolder(holder: StudentRowViewHolder, position: Int) {
-        holder.bind(students[position], position)
+        studentList?.get(position)?.let { holder.bind(it) }
     }
 }

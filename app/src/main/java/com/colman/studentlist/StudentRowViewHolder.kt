@@ -1,36 +1,40 @@
-package com.colman.studentlist
-
 import android.util.Log
+import android.view.View
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.colman.studentlist.databinding.StudentRowLayoutBinding
+import com.colman.studentlist.R
+import com.colman.studentlist.model.Model
 import com.colman.studentlist.model.Student
-import com.squareup.picasso.Picasso
 
-class StudentRowViewHolder(
-    private val binding: StudentRowLayoutBinding
-): RecyclerView.ViewHolder(binding.root) {
+interface OnItemClickListener {
+    fun onItemClick(position: Int)
+    fun onStudentClick(student: Student?, position: Int)
+}
+
+class StudentRowViewHolder(itemView: View, listener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
+    private val studentNameTextView: TextView = itemView.findViewById(R.id.studentNameTextView)
+    private val studentIdTextView: TextView = itemView.findViewById(R.id.studentIdTextView)
+    private val studentCheckBox: CheckBox = itemView.findViewById(R.id.studentCheckBox)
     private var student: Student? = null
 
     init {
-        binding.checkbox.setOnClickListener { view ->
-            (view?.tag as? Int)?.let { tag ->
-                student?.isPresent = binding.checkbox.isChecked
-            }
+        studentCheckBox.setOnClickListener {
+            val currentStudent = Model.shared.students[bindingAdapterPosition]
+            currentStudent.isPresent = studentCheckBox.isChecked
+        }
+
+        itemView.setOnClickListener {
+            Log.i("TAG", "StudentRowViewHolder: Clicked on position $bindingAdapterPosition")
+            listener?.onItemClick(bindingAdapterPosition)
+            listener?.onStudentClick(student, bindingAdapterPosition)
         }
     }
 
-    fun bind(student: Student, position: Int) {
+    fun bind(student: Student?) {
         this.student = student
-        binding.nameTextView.text = student.name
-        binding.idTextView.text = student.id
-        binding.checkbox.apply {
-            isChecked = student.isPresent
-            tag = position
-        }
-        Log.v("TAG", "Loading image from URL: ${student.avatarUrl}")
-        Picasso
-            .get()
-            .load(student.avatarUrl)
-            .into(binding.imageView)
+        studentNameTextView.text = student?.name
+        studentIdTextView.text = student?.id
+        studentCheckBox.isChecked = student?.isPresent ?: false
     }
 }

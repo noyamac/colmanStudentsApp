@@ -1,5 +1,8 @@
 package com.colman.studentlist.model
 
+import android.util.Log
+import kotlin.collections.mutableListOf
+
 class Model private constructor() {
     val students = mutableListOf<Student>()
 
@@ -16,5 +19,9 @@ class Model private constructor() {
     }
     companion object {
         val shared = Model()
+    }
+
+    fun getStudentByIndex(index: Int): Student {
+        return this.students[index]
     }
 }
