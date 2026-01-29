@@ -1,6 +1,8 @@
 package com.colman.studentlist
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,8 +24,27 @@ class StudentDetails : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         studentIndex = intent.getIntExtra("student_index", 0)
-        student = Model.shared.getStudentByIndex(studentIndex)
+        
+        if (!setupData()) {
+            finish()
+            return
+        }
 
+        val editButton = findViewById<Button>(R.id.editButton)
+        editButton.setOnClickListener {
+            val intent = Intent(this, EditStudent::class.java)
+            intent.putExtra("student_index", studentIndex)
+            startActivity(intent)
+        }
+    }
+
+    private fun setupData(): Boolean {
+        if (studentIndex < 0 || studentIndex >= Model.shared.students.size) {
+            return false
+        }
+        
+        student = Model.shared.getStudentByIndex(studentIndex)
+        
         val textViewName = findViewById<TextView>(R.id.textViewStudentName)
         val textViewId = findViewById<TextView>(R.id.textViewStudentId)
         val checkBoxChecked = findViewById<CheckBox>(R.id.checkBoxStudentPresent)
@@ -33,10 +54,18 @@ class StudentDetails : AppCompatActivity() {
         textViewId.text = student?.id
         checkBoxChecked.isChecked = student?.isPresent ?: false
         imageViewDetail.setImageResource(R.drawable.avatar)
+        return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!setupData()) {
+            finish()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        finish()
         return true
     }
 }

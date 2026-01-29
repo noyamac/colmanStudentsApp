@@ -1,6 +1,5 @@
 package com.colman.studentlist
 
-import OnItemClickListener
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.colman.studentlist.model.Model
 import com.colman.studentlist.model.Student
 import com.google.android.material.appbar.MaterialToolbar
-import studentAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,5 +38,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         studentsRecyclerView.adapter = adapter
+
+        val addStudentButton = findViewById<FloatingActionButton>(R.id.addStudent)
+        addStudentButton.setOnClickListener {
+            val intent = Intent(this, AddStudent::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (findViewById<RecyclerView>(R.id.studentlist).adapter as? studentAdapter)?.notifyDataSetChanged()
     }
 }
